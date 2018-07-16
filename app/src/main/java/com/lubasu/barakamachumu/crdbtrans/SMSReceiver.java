@@ -40,4 +40,7 @@ public class SMSReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
     }
+
+    public void d(){}
+
 }
