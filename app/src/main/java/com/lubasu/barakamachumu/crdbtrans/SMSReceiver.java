@@ -41,6 +41,6 @@ public class SMSReceiver extends BroadcastReceiver {
         }
     }
 
-    public void d(){}
+
 
 }

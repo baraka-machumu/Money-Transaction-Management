@@ -1,6 +1,7 @@
 package com.lubasu.barakamachumu.crdbtrans;
 
         import java.util.ArrayList;
+        import java.util.List;
 
         import android.Manifest;
         import android.accounts.Account;
@@ -14,9 +15,11 @@ package com.lubasu.barakamachumu.crdbtrans;
         import android.os.Build;
         import android.os.Bundle;
         import android.provider.MediaStore;
+        import android.support.design.widget.TabLayout;
         import android.support.v4.app.ActivityCompat;
         import android.support.v4.content.ContextCompat;
         import android.support.v4.content.PermissionChecker;
+        import android.support.v4.view.ViewPager;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.widget.Toolbar;
         import android.text.Html;
@@ -27,8 +30,13 @@ package com.lubasu.barakamachumu.crdbtrans;
         import android.widget.ArrayAdapter;
         import android.widget.ListView;
         import android.widget.Toast;
+        import android.support.v4.app.Fragment;
+        import android.support.v4.app.FragmentManager;
+        import android.support.v4.app.FragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity{
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
     private static final String INBOX_URI = "content://sms/inbox";
     private static MainActivity activity;
     private ArrayList<String> smsList = new ArrayList<String>();
@@ -36,6 +44,7 @@ public class MainActivity extends AppCompatActivity{
     private ArrayAdapter<String> adapter;
     static final Integer READ = 0x1;
     static final Integer RECEIVE = 0x2;
+
     public static MainActivity instance() {
         return activity;
     }
@@ -53,12 +62,27 @@ public class MainActivity extends AppCompatActivity{
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
         mListView = (ListView) findViewById(R.id.list);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, smsList);
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(MyItemClickListener);
 
         readSMS();
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new CrdbFragment(), "ONE");
+        adapter.addFragment(new VodacomFragment(), "TWO");
+        viewPager.setAdapter(adapter);
     }
     @Override
     public void onStart() {
@@ -148,11 +172,41 @@ public class MainActivity extends AppCompatActivity{
 
             } else {
 
+
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{permission}, requestCode);
             }
         } else {
 
 //            Toast.makeText(this, "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 
