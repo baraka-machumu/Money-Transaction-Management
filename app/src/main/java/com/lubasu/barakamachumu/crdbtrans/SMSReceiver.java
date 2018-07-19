@@ -15,7 +15,8 @@ package com.lubasu.barakamachumu.crdbtrans;
 public class SMSReceiver extends BroadcastReceiver {
     // SmsManager class is responsible for all SMS related actions
     final SmsManager sms = SmsManager.getDefault();
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, Intent intent)
+    {
         // Get the SMS message received
         final Bundle bundle = intent.getExtras();
         try {
@@ -23,9 +24,9 @@ public class SMSReceiver extends BroadcastReceiver {
                 // A PDU is a "protocol data unit". This is the industrial standard for SMS message
                 final Object[] pdusObj = (Object[]) bundle.get("pdus");
                 for (int i = 0; i < pdusObj.length; i++) {
-                    // This will create an SmsMessage object from the received pdu
+
                     SmsMessage sms = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
-                    // Get sender phone number
+
                     String phoneNumber = sms.getDisplayOriginatingAddress();
                     String sender = phoneNumber;
                     String message = sms.getDisplayMessageBody();

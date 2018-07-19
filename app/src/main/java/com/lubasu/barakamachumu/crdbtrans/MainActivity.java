@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity{
             askForPermission(Manifest.permission.READ_SMS,READ);
 
         }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
