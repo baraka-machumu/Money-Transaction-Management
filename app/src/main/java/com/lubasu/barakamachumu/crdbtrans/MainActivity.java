@@ -15,6 +15,7 @@ package com.lubasu.barakamachumu.crdbtrans;
         import android.os.Build;
         import android.os.Bundle;
         import android.provider.MediaStore;
+        import android.support.design.widget.CollapsingToolbarLayout;
         import android.support.design.widget.TabLayout;
         import android.support.v4.app.ActivityCompat;
         import android.support.v4.content.ContextCompat;
@@ -35,15 +36,21 @@ package com.lubasu.barakamachumu.crdbtrans;
         import android.support.v4.app.FragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity{
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
     private static final String INBOX_URI = "content://sms/inbox";
     private static MainActivity activity;
+
     private ArrayList<String> smsList = new ArrayList<String>();
     private ListView mListView;
+
     private ArrayAdapter<String> adapter;
     static final Integer READ = 0x1;
+
     static final Integer RECEIVE = 0x2;
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     public static MainActivity instance() {
         return activity;
@@ -64,25 +71,23 @@ public class MainActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        mListView = (ListView) findViewById(R.id.list);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, smsList);
-        mListView.setAdapter(adapter);
-        mListView.setOnItemClickListener(MyItemClickListener);
 
-        readSMS();
+        collapsingToolbarLayout = (CollapsingToolbarLayout)     findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle("Pesa");
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CrdbFragment(), "ONE");
-        adapter.addFragment(new VodacomFragment(), "TWO");
+        adapter.addFragment(new CrdbFragment(), "CRDB");
+        adapter.addFragment(new VodacomFragment(), "VOdacom");
         viewPager.setAdapter(adapter);
     }
     @Override
@@ -122,6 +127,7 @@ public class MainActivity extends AppCompatActivity{
             // other 'case' lines to check for other
             // permissions this app might request.
         }
+
     }
 
     public void readSMS() {
@@ -158,7 +164,6 @@ public class MainActivity extends AppCompatActivity{
             }
         }
     };
-
 
 
     private void askForPermission(String permission, Integer requestCode) {
@@ -210,6 +215,8 @@ public class MainActivity extends AppCompatActivity{
             return mFragmentTitleList.get(position);
         }
     }
+
+
 
 
 }

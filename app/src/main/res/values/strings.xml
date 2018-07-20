@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">CRDB TRANS</string>
+    <string name="app_name">Mobile Money Tz</string>
     <string name="action_settings">Settings</string>
-    <string name="sms_message"><![CDATA[ From : %1$s<br/>%2$s]]></string>
+    <string name="sms_message"><![CDATA[ From : %1$s<br/>%2$s<br>%3$s]]></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
